@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - Brand</title>
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="static/fonts/fontawesome-all.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid">
+                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" style="font-size: 32px;"><label class="form-label" style="height: 48px;"><strong>MyBox</strong></label></form>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-start-primary py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[17].name }}</span></div>
+                                                <div class="text-dark fw-bold h5 mb-0">
+                                                    <form method="POST" action="/cmd" class="center-block">
+                                                    {% if pins[17].state == true %} 
+                                                    <button type="submit" class="btn btn-danger" name="pin" value="17">Turn OFF</button> 
+                                                    {% else %} 
+                                                    <button type="submit" class="btn btn-success" name="pin" value="17">Turn ON</button> 
+                                                    {% endif %}
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300" style="width: 50px;height: 50px;"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-start-success py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[27].name }}</span></div>
+                                                <div class="text-dark fw-bold h5 mb-0">
+                                                    <form method="POST" action="/cmd" class="center-block">
+                                                    {% if pins[27].state == true %} 
+                                                        <button type="submit" class="btn btn-danger" name="pin" value="27">Turn OFF</button> 
+                                                    {% else %} 
+                                                        <button type="submit" class="btn btn-success" name="pin" value="27">Turn ON</button> 
+                                                    {% endif %}
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300" style="width: 50px;height: 50px;"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-start-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[22].name }}</span></div>
+                                                <div class="text-dark fw-bold h5 mb-0">
+                                                    <form method="POST" action="/cmd" class="center-block">
+                                                    {% if pins[22].state == true %} 
+                                                        <button type="submit" class="btn btn-danger" name="pin" value="22">Turn OFF</button>
+                                                    {% else %} 
+                                                        <button type="submit" class="btn btn-success" name="pin" value="22">Turn ON</button> 
+                                                    {% endif %}
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        <div class="col-auto"><img src="static/img/lamp.png" style="width: 50px;height: 50px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-start-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[20].name }}</span></div>
+                                                <div class="text-dark fw-bold h5 mb-0">
+                                                    <form method="POST" action="/cmd" class="center-block">
+                                                    {% if pins[20].state == true %} 
+                                                        <button type="submit" class="btn btn-danger" name="pin" value="20">Turn OFF</button>
+                                                    {% else %} 
+                                                        <button type="submit" class="btn btn-success" name="pin" value="20">Turn ON</button> 
+                                                    {% endif %}
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        <div class="col-auto"><img src="static/img/lamp.png" style="width: 50px;height: 50px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-start-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Température</span></div>
+                                                <div class="text-dark fw-bold h5 mb-0">
+                                                    <p class="text-dark"> {{ temp }}</p><span></span>
+                                                </div>
+                                                <form action="/refresh" method="post">
+                                                    <button type="submit" class="btn btn-primary">Refresh</button>
+                                                </form>
+                                            </div>
+                                        <div class="col-auto"><img src="static/img/lamp.png" style="width: 50px;height: 50px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-start-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Thermostat</span></div>
+                                                <div class="text-dark fw-bold h5 mb-0">
+                                                    <form action="/refresh" method="post">
+                                                        <div class="form-group">
+                                                            <input type="number" class="form-control" id="t_max" placeholder="température maximum"><br/>
+                                                            <input type="number" class="form-control" id="t_min" placeholder="température minumum"><br/>
+                                                          </div>
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        <div class="col-auto"><img src="static/img/lamp.png" style="width: 50px;height: 50px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/js/chart.min.js"></script>
+    <script src="static/js/bs-init.js"></script>
+    <script src="static/js/theme.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,3 @@
+https://blog.ruanbekker.com/blog/2017/12/14/graphing-pretty-charts-with-python-flask-and-chartjs/
+
+https://github.com/dking986/Flask-Bootstrap-Demo
