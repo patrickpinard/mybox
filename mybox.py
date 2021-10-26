@@ -9,12 +9,17 @@
 #               1.2 - modification du log file
 #               1.1 - ajout du bouton shutdown externe
 #               1.0 - version initiale fonctionelle
+#  {} = "alt/option" + "(" ou ")"
+#  [] = "alt/option" + "5" ou "6"
+#   ~  = "alt/option" + n    
+#   \  = Alt + Maj + / 
 
 import RPi.GPIO as GPIO
-from flask import Flask, render_template, request, redirect, jsonify, url_for, session, abort
+from flask import Flask, Markup, render_template, request, redirect, jsonify, url_for, session, abort
 from flask_restful import Resource, Api, reqparse
 import logging
-import time
+from datetime import time
+from time import sleep
 import os
 from ds18b20 import DS18B20
 from threading import Thread
@@ -23,6 +28,28 @@ PASSWORD    = 'password'
 USERNAME    = 'admin'
 t = 0       # température de la sonde DS18B20
 
+legend = 'Sonde DS18B20'
+temperatures = [73.7, 73.4, 73.8, 72.8, 68.7, 65.2,
+                61.8, 58.7, 58.2, 58.3, 60.5, 65.7,
+                70.2, 71.4, 71.2, 70.9, 71.3, 71.1]
+times = [time(hour=11, minute=14, second=15),
+        time(hour=11, minute=14, second=30),
+        time(hour=11, minute=14, second=45),
+        time(hour=11, minute=15, second=00),
+        time(hour=11, minute=15, second=15),
+        time(hour=11, minute=15, second=30),
+        time(hour=11, minute=15, second=45),
+        time(hour=11, minute=16, second=00),
+        time(hour=11, minute=16, second=15),
+        time(hour=11, minute=16, second=30),
+        time(hour=11, minute=16, second=45),
+        time(hour=11, minute=17, second=00),
+        time(hour=11, minute=17, second=15),
+        time(hour=11, minute=17, second=30),
+        time(hour=11, minute=17, second=45),
+        time(hour=11, minute=18, second=00),
+        time(hour=11, minute=18, second=15),
+        time(hour=11, minute=18, second=30)]
 
 logging.basicConfig(filename='mybox.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -47,9 +74,12 @@ for pin in pins:
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
+
 @app.route('/', methods=["GET", "POST"])
 def login():
+    global t, labels, values, legend, temperatures, times  
 
+    message = "starting"
     if request.method == "GET":
         # Check if user already logged in
 
@@ -76,8 +106,14 @@ def login():
                 for pin in pins:
                     pins[pin]['state'] = GPIO.input(pin)
                 # Put the pin dictionary into the template data dictionary:
+                # Along with the pin dictionary, put the message into the template data dictionary:
                 templateData = {
-                    'pins': pins
+                    'message': message,
+                    'pins': pins,
+                    'temp' : t, 
+                    'legend' : legend, 
+                    'labels' : times, 
+                    'values' : temperatures
                 }
                 # Pass the template data into the template main.html and return it to the user
                 return render_template('main.html', **templateData)
@@ -95,7 +131,7 @@ def logout():
 
 @app.route("/cmd", methods=['POST'])
 def cmd():
-    global templateData,t
+    global templateData,t,legend, temperatures, times 
 
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('pin', type=str, required=True)           
@@ -116,10 +152,13 @@ def cmd():
 
     # Along with the pin dictionary, put the message into the template data dictionary:
     templateData = {
-        'message': message,
-        'pins': pins,
-        'temp' : t
-    }
+                    'message': message,
+                    'pins': pins,
+                    'temp' : t, 
+                    'legend' : legend, 
+                    'labels' : times, 
+                    'values' : temperatures
+                }
     return render_template('main.html', **templateData)
 
 def read_temp():
@@ -129,19 +168,21 @@ def read_temp():
     while True: 
         allTemp = sensor.get_temperatures([DS18B20.DEGREES_C, DS18B20.DEGREES_F, DS18B20.KELVIN])
         t = allTemp[0]
-        time.sleep(10)
+        sleep(10)
         
 @app.route("/refresh", methods=["GET",'POST'])
 def refresh():
-    global templateData
-    global t
+    global legend, temperatures, times, t
     
     message = "refresh temperature measure"
     templateData = {
-        'message': message,
-        'pins': pins,
-        'temp' : t
-    }
+                    'message': message,
+                    'pins': pins,
+                    'temp' : t, 
+                    'legend' : legend, 
+                    'labels' : times, 
+                    'values' : temperatures
+                }
     logging.info(message)
     return render_template('main.html', **templateData) 
 
