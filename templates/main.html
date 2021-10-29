@@ -114,50 +114,45 @@
                 </div>
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-4 col-xl-3 mb-4">
+                        <div class="col-md-3 col-xl-3 mb-6">
                             <div class="card shadow border-start-info py-2">
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Température (°Celsius)</span></div>
+                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Température (°Celsius) & Thermostat</span></div>
                                                 <div class="text-dark fw-bold h5 mb-0">
-                                                    <p class="text-dark"> {{ temp }}</p><span></span>
-                                                </div>
-                                                <form action="/refresh" method="post">
-                                                    <button type="submit" class="btn btn-primary">Rafraîchir</button>
-                                                </form>
-                                                <br/><br/>
-                                                <label class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Thermostat</span></label>
-                                                    <form action="/refresh" method="post">
-                                                        <div class="form-group">
-                                                            <label for="customRange2" class="form-label">Temp min</label>
-                                                            <input type="range" class="form-range" min="0" max="25" id="Tmin">
-                                                            <label for="customRange1" class="form-label">Temp max</label>
-                                                            <input type="range" class="form-range" min="0" max="25" id="Tmax">
+                                                    <form method="POST" action="/refresh" class="center-block">
+                                                        <p class="text-dark"> {{ temp }}</p><span></span>
+                                                        <button type="submit" value="Submit" class="btn btn-primary">Refresh</button>
+                                                    </form>   
+                                                    <br>
+                                                    <form method="POST" action="/set_thermostat" class="center-block">
+                                                        <div class="slidecontainer" id="slide_container_f">
+                                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span> T.min : {{ Tmin }} </span></div>
+                                                            <input type="range" min="0" max="20" value={{Tmin}} class="slider" id="myRange" name="Tmin" oninput="num1.value = this.value">
+                                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span> T.max : {{ Tmax }}</span></div>
+                                                            <input type="range" min="0" max="20" value={{Tmax}} class="slider" id="myRange" name="Tmax" oninput="num2.value = this.value">
                                                         </div>
-                                                        <br/>
-                                                        <button type="submit" class="btn btn-primary">Appliquer</button>
-                                                    </form>
+                                                        <button type="submit" value="Submit" class="btn btn-primary">Apply</button>
+                                                    </form>   
+                                                </div>
                                             </div>
-                                        <div class="col-auto"><img src="static/img/thermometer-half.svg" style="width: 50px;height: 50px;"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8 col-xl-6 mb-4">
+                        <div class="col-md-9 col-xl-6 mb-6">
                             <div class="card shadow border-start-info py-2">
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
                                             <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span> Graphique de la temperature </span></div>
-                                                    <div class="text-dark fw-bold h5 mb-0">
                                                         <canvas id="myChart" width="600" height="400"></canvas>
-                                                    </div>
                                             </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -167,7 +162,9 @@
     <script src="static/js/chart.min.js"></script>
     <script src="static/js/bs-init.js"></script>
     <script src="static/js/theme.js"></script>
+    
     <script>
+        
         // Global parameters:
         // do not resize the chart canvas when its container does (keep at 600x400px)
         Chart.defaults.global.responsive = false;

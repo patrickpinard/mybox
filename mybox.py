@@ -4,7 +4,8 @@
 # Auteur    : Patrick Pinard
 # Date      : 22.10.2021
 # Objet     : Pilotage modules relais avec interface web basée sur API RESTful Flask et bootstrap sur PI zero 
-# Version   :   2.0 - ajout d'un Framework Bootstrap pour un affichage plus pro
+# Version   :   2.1 - ajout du Thermostat pour contrôler le chauffage
+#               2.0 - ajout d'un Framework Bootstrap pour un affichage plus pro
 #               1.3 - ajout de la lecture de température via un thread
 #               1.2 - modification du log file
 #               1.1 - ajout du bouton shutdown externe
@@ -18,7 +19,7 @@ import RPi.GPIO as GPIO
 from flask import Flask, Markup, render_template, request, redirect, jsonify, url_for, session, abort
 from flask_restful import Resource, Api, reqparse
 import logging
-from datetime import time
+import datetime
 from time import sleep
 import os
 from ds18b20 import DS18B20
@@ -26,30 +27,16 @@ from threading import Thread
 
 PASSWORD    = 'password'
 USERNAME    = 'admin'
+
 t = 0       # température de la sonde DS18B20
+Tmin = 0    # température minimale pour enclenchement du thermostat du chauffage
+Tmax = 20   # température maximale pour déclenchement du thermostat du chauffage
+Thermostat = False  # valeur True ou False pour déclenchement du chauffage
+sensor = DS18B20()
 
 legend = 'Sonde DS18B20'
-temperatures = [73.7, 73.4, 73.8, 72.8, 68.7, 65.2,
-                61.8, 58.7, 58.2, 58.3, 60.5, 65.7,
-                70.2, 71.4, 71.2, 70.9, 71.3, 71.1]
-times = [time(hour=11, minute=14, second=15),
-        time(hour=11, minute=14, second=30),
-        time(hour=11, minute=14, second=45),
-        time(hour=11, minute=15, second=00),
-        time(hour=11, minute=15, second=15),
-        time(hour=11, minute=15, second=30),
-        time(hour=11, minute=15, second=45),
-        time(hour=11, minute=16, second=00),
-        time(hour=11, minute=16, second=15),
-        time(hour=11, minute=16, second=30),
-        time(hour=11, minute=16, second=45),
-        time(hour=11, minute=17, second=00),
-        time(hour=11, minute=17, second=15),
-        time(hour=11, minute=17, second=30),
-        time(hour=11, minute=17, second=45),
-        time(hour=11, minute=18, second=00),
-        time(hour=11, minute=18, second=15),
-        time(hour=11, minute=18, second=30)]
+temperatures = []
+times = []
 
 logging.basicConfig(filename='mybox.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -77,9 +64,9 @@ for pin in pins:
 
 @app.route('/', methods=["GET", "POST"])
 def login():
-    global t, labels, values, legend, temperatures, times  
+    global t, labels, values, legend, temperatures, times, Tmin, Tmax, Thermostat
 
-    message = "starting"
+    message = "logging"
     if request.method == "GET":
         # Check if user already logged in
 
@@ -113,7 +100,10 @@ def login():
                     'temp' : t, 
                     'legend' : legend, 
                     'labels' : times, 
-                    'values' : temperatures
+                    'values' : temperatures,
+                    'Tmin' : Tmin,
+                    'Tmax' : Tmax,
+                    'Thermostat' : Thermostat
                 }
                 # Pass the template data into the template main.html and return it to the user
                 return render_template('main.html', **templateData)
@@ -131,7 +121,7 @@ def logout():
 
 @app.route("/cmd", methods=['POST'])
 def cmd():
-    global templateData,t,legend, temperatures, times 
+    global templateData,t,legend, temperatures, times, Tmin, Tmax, Thermostat
 
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('pin', type=str, required=True)           
@@ -157,47 +147,100 @@ def cmd():
                     'temp' : t, 
                     'legend' : legend, 
                     'labels' : times, 
-                    'values' : temperatures
+                    'values' : temperatures,
+                    'Tmin' : Tmin,
+                    'Tmax' : Tmax,
+                    'Thermostat' : Thermostat
                 }
+
     return render_template('main.html', **templateData)
 
-def read_temp():
-    # Lecture de la température toute les dix secondes et mise à jour de la variable t 
-    global t
-    sensor = DS18B20()
-    while True: 
-        allTemp = sensor.get_temperatures([DS18B20.DEGREES_C, DS18B20.DEGREES_F, DS18B20.KELVIN])
-        t = allTemp[0]
-        sleep(10)
-        
-@app.route("/refresh", methods=["GET",'POST'])
-def refresh():
-    global legend, temperatures, times, t
-    
-    message = "refresh temperature measure"
+
+@app.route("/set_thermostat", methods=["GET",'POST'])
+def set_thermostat():
+    global legend, temperatures, times, t, times, Tmin, Tmax, Thermostat
+   
+    message = "set thermostat values"
+
+    if request.method == 'POST':
+        Tmin=int(request.form['Tmin'])
+        Tmax=int(request.form['Tmax'])
+
+    text = "Thermostat values changed to Tmin : " + str(Tmin) + "  and Tmax :   (°Celsius)" + str(Tmax)
+    logging.info(text)
+    read_temp()
     templateData = {
                     'message': message,
                     'pins': pins,
                     'temp' : t, 
                     'legend' : legend, 
                     'labels' : times, 
-                    'values' : temperatures
+                    'values' : temperatures,
+                    'Tmin' : Tmin,
+                    'Tmax' : Tmax,
+                    'Thermostat' : Thermostat
                 }
-    logging.info(message)
+
     return render_template('main.html', **templateData) 
+
+
+@app.route("/refresh", methods=["GET",'POST'])
+def refresh():
+    global legend, temperatures, times, t, times, Tmin, Tmax, Thermostat
+   
+    message = "reading temp.."
+
+    read_temp()
+    templateData = {
+                    'message': message,
+                    'pins': pins,
+                    'temp' : t, 
+                    'legend' : legend, 
+                    'labels' : times, 
+                    'values' : temperatures,
+                    'Tmin' : Tmin,
+                    'Tmax' : Tmax,
+                    'Thermostat' : Thermostat
+                }
+
+    return render_template('main.html', **templateData) 
+
+def read_temp():
+
+    global t, times, temperatures, Thermostat, sensor
+
+    allTemp = sensor.get_temperatures([DS18B20.DEGREES_C, DS18B20.DEGREES_F, DS18B20.KELVIN])
+    t = allTemp[0]
+    temperatures.append(t)
+    now = datetime.datetime.now()
+    times.append(datetime.time(now.hour, now.minute, now.second))
+    text = ("measure temperature, t : " + str(t) + " - time : " + str(datetime.time(now.hour, now.minute, now.second)))
+    logging.info(text)
+    if t < Tmin : 
+        logging.info("Temperature is below Temp thermostat min. Starting radiator")
+        Thermostat = False
+    if t > Tmax : 
+        logging.info("Temperature is upper Temp thermostat max. Stoping radiator")
+        Thermostat = True
+
+def loop():
+    # Lecture de la température toute les 60 secondes  
+    while True: 
+        read_temp()
+        sleep(60)
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
 
     logging.info("###################################")
-    logging.info("########   Relaybox V2.0  #########")
+    logging.info("########   Relaybox V2.1  #########")
     logging.info("########   Patrick Pinard #########")
     logging.info("###################################")
     logging.info("program starting...")
 
 
     # Demarre le threadpour lecture température
-    t1 = Thread(target=read_temp)
+    t1 = Thread(target=loop)
     t1.start()
     
     app.run(host='0.0.0.0', port=8001, debug=True)
