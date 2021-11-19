@@ -1,253 +1,601 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> MyBox </title>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - Brand</title>
-    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="static/fonts/fontawesome-all.min.css">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-    <script src='static/Chart.min.js'></script>
-</head>
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="static/css/lineicons.css" />
+    <link rel="stylesheet" href="static/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="static/css/fullcalendar.css" />
+    <link rel="stylesheet" href="static/css/morris.css" />
+    <link rel="stylesheet" href="static/css/main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="static/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="static/css/style.css" />
 
-<body id="page-top">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.js"></script>
+    
+    <!-- ========== script pour toggle checkbox  ========= -->
+    
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
+    <link rel="stylesheet "href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/css/bootstrap4-toggle.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  </head>
+
+  <!--- <script>
+    function display_time(){
+     var content = document.getElementById('time');
+     xhr = new XMLHttpRequest();
+     xhr.open('POST', '/display_time', false);
+     xhr.onload = function() {
+         content.innerHTML = this.responseText;
+     };
+     xhr. send();
+  }
+  setInterval(function(){ display_time()},1000);
+  </script>
+  --->
+
+  <body>
+    <!-- ========== Nav bar ========= -->
     <div id="wrapper">
-        <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid">
-                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" style="font-size: 32px;"><label class="form-label" style="height: 48px;"><strong>MyBox</strong></label></form>
-                        <ul class="navbar-nav flex-nowrap ms-auto">
-                            <div class="d-none d-sm-block topbar-divider"></div>
+      <div class="d-flex flex-column" id="content-wrapper">
+          <div id="content">
+              <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar ">
+                  <div class="container-fluid">
+                    
+                  <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" style="font-size: 32px;">
+                    <img src="static/images/mybox.jpg""  style="width: 100px;height: 80px; margin:0px">
+                  </form>
+
+                  <!--- <div class="text-bold" id="time" style="font-size: 16px;">Time goes here</div>  --->
+
+                  <button class="btn float-end" style="font-size: 32px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" role="button">
+                      <i class="bi bi-menu-button-fill" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">  </i>
+                  </button>
+
+                  <!-- dropdown menu 
+                  <div class="d-none d-sm-block topbar-divider"></div>
+                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                      <img class="border rounded-circle img-profile" src="static/images/profile/profile.png"></a>
+                      <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                          <li><a class="dropdown-item" href="#offcanvasExample" role="button">Menu</a></li>
+                          <li><a class="dropdown-item" href="#exampleModal" data-bs-toggle="modal" data-bs-target="#exampleModal">A propos</a></li>
+                          <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                                      
+                      </div>
+                    </div>
+                  -->
+                  </div>     
+                      <!-- Modal (A propose de) -->
+                      <div class="modal fade" id="exampleModal" tabindex="-5 " aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">A propos de MyBox</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              MyBox est un boitier électrique comprenant 4 relais avec prises 240V commandées par un Raspberry Pi zero (GPIO). 
+                              Il comprend aussi une sonde de température de type 18BS20 ainsi qu'un thermostat pour piloter le relai n°3 (chauffage) en fonction de températures minimale et maximale.
+                              L'ensemble se contrôle au travers d'une interface web en Bootstrap 5 / Flask. <br/>
+                              <br/>
+                            </div>
+                            <div class="modal-footer">
+                              V3.0 Patrick Pinard 2021
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+
+                  <!-- Canvas -->                  
+
+                  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-keyboard="false" data-bs-backdrop="false">
+                    <div class="offcanvas-header">
+                        <h1 class="offcanvas-title d-none d-sm-block" id="offcanvas">   Menu</h1>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body px-50">
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+                            
+                            <li>
+                              <a href="/refresh"" class="nav-link text-truncate">
+                                <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-sm-inline">   Dashboard</span> </a>
+                            </li>
+                            <li>
+                                <a href="/table" class="nav-link text-truncate">
+                                    <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">   Table</span></a>
+                            </li>
+                            <li>
+                              <a href="/graph" class="nav-link text-truncate">
+                                  <i class="fs-5 bi-graph-up"></i><span class="ms-1 d-none d-sm-inline">   Graphique</span></a>
+                            </li>
+                            <li>
+                              <a href="#exampleModal" class="nav-link text-truncate" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="fs-5 bi-chat-text"></i><span class="ms-1 d-none d-sm-inline">   A propos </span></a>
+                            </li>
+                           
+                            <li>
+                              <a href="#"" class="nav-link text-truncate">
+                                  <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">   Profile</span> </a>
+                            </li>
+                            
+                            <li>
+                                <a href="/logout"" class="nav-link text-truncate">
+                                    <i class="fs-5 bi-door-closed"></i><span class="ms-1 d-none d-sm-inline">   Logout</span> </a>
+                            </li>
                         </ul>
                     </div>
-                </nav>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-3 col-xl-3 mb-4">
-                            <div class="card shadow border-start-primary py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[17].name }}</span></div>
-                                                <div class="text-dark fw-bold h5 mb-0">
-                                                    <form method="POST" action="/cmd" class="center-block">
-                                                    {% if pins[17].state == true %} 
-                                                    <button type="submit" class="btn btn-danger" name="pin" value="17">Turn OFF</button> 
-                                                    {% else %} 
-                                                    <button type="submit" class="btn btn-success" name="pin" value="17">Turn ON</button> 
-                                                    {% endif %}
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto"><img src="static/img/outlet.svg" style="width: 50px;height: 50px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xl-3 mb-4">
-                            <div class="card shadow border-start-success py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[27].name }}</span></div>
-                                                <div class="text-dark fw-bold h5 mb-0">
-                                                    <form method="POST" action="/cmd" class="center-block">
-                                                    {% if pins[27].state == true %} 
-                                                        <button type="submit" class="btn btn-danger" name="pin" value="27">Turn OFF</button> 
-                                                    {% else %} 
-                                                        <button type="submit" class="btn btn-success" name="pin" value="27">Turn ON</button> 
-                                                    {% endif %}
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto"><img src="static/img/outlet.svg" style="width: 50px;height: 50px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xl-3 mb-4">
-                            <div class="card shadow border-start-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[22].name }}</span></div>
-                                                <div class="text-dark fw-bold h5 mb-0">
-                                                    <form method="POST" action="/cmd" class="center-block">
-                                                    {% if pins[22].state == true %} 
-                                                        <button type="submit" class="btn btn-danger" name="pin" value="22">Turn OFF</button>
-                                                    {% else %} 
-                                                        <button type="submit" class="btn btn-success" name="pin" value="22">Turn ON</button> 
-                                                    {% endif %}
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        <div class="col-auto"><img src="static/img/chauffe-eau.png" style="width: 50px;height: 50px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xl-3 mb-4">
-                            <div class="card shadow border-start-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>{{ pins[20].name }}</span></div>
-                                                <div class="text-dark fw-bold h5 mb-0">
-                                                    <form method="POST" action="/cmd" class="center-block">
-                                                    {% if pins[20].state == true %} 
-                                                        <button type="submit" class="btn btn-danger" name="pin" value="20">Turn OFF</button>
-                                                    {% else %} 
-                                                        <button type="submit" class="btn btn-success" name="pin" value="20">Turn ON</button> 
-                                                    {% endif %}
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        <div class="col-auto"><img src="static/img/lamp.png" style="width: 50px;height: 50px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- end Canvas --> 
+                  </div>
+              </nav>
+          </div>
+      </div>
+      <!-- ========== end Nav bar ========= -->
+
+      <!-- ========== Cartes relais  ========== -->
+
+      <div class="container-fluid">
+        <div class="title-wrapper pt-0"> 
+          <a class="mb-10">mybox/dashboard</a>   
+          <div class="row">
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  Relai 1
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                        <img src="static/images/lamp_on.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
+                    </div>
+                  <div class="col-md-6">
+                    <div class="content">
+                      <br/>
+                      <h3 class="text-bold mb-10" style="margin:0px">Lampe</h3> <br/>
+                      
+                        {% if pins[17].state == true %} 
+                        <input type="checkbox"  id="17" value="17" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)" >
+                        {% else %} 
+                        <input type="checkbox"  id="17" value="17" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)" >
+                        {% endif %} 
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- End Col -->
+
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
+                  Relai 2
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                      <img src="static/images/electric-outlet.png" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
+                    </div>
+                  <div class="col-md-6">
+                    <div class="content">
+                      <br/>
+                      <h3 class="text-bold mb-10" style="margin:0px">Prise</h3> <br/>
+
+                      {% if pins[27].state == true %} 
+                        <input type="checkbox"  id="27" value="27" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)" >
+                      {% else %} 
+                        <input type="checkbox" id="27" value="27" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)" >
+                      {% endif %} 
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- End Col -->
+
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
+                  Relai 3
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                      <img src="static/images/radiateur.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
+                    </div>
+                  <div class="col-md-6">
+                    <div class="content">
+                      <br/>
+                      <h3 class="text-bold mb-10" style="margin:0px">Chauffage</h3> <br/>
+                      
+                        {% if Thermostat == true %} 
+                          <a>Thermostat <br/> activé !</a>
+                        {% else %} 
+                          {% if pins[22].state == true %} 
+                          <input type="checkbox"  id="22" value="22" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)" >
+                          {% else %} 
+                          <input type="checkbox" id="22" value="22" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)">
+                          {% endif %} 
+                        {% endif %} 
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- End Col -->
+
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
+                  Relai 4
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                      <img src="static/images/switcher.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
+                    </div>
+                  <div class="col-md-6">
+                    <div class="content">
+                      <br/>
+                      <h3 class="text-bold mb-10" style="margin:0px">n/a</h3> <br/>
+                      
+                        {% if pins[23].state == true %} 
+                        <input type="checkbox" id="23" value="23" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)">
+                        {% else %} 
+                        <input type="checkbox" id="23" value="23" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)">
+                        {% endif %} 
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Col -->
+          </div>
+          <!-- End row -->
+          <!-- ========== fin Cartes relais  ========== -->
+          <br/>
+          <!-- ========== Cartes Temperature, Pression atm. & Thermostats ========== -->
+          <div class="row">
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  Température intérieur
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                      <img src="static/images/inhousetemp.png"" class="img-fluid rounded-start" style="width: 80px;height: 80px; margin:20px">
+                    </div>
+                  <div class="col-md-6">
+                    <div class="content">
+                      <br/>
+                      <h3 class="text-bold mb-10">{{ Tin }} °C</h3>
+                      <a class="mb-10">{{ t }}</a>
+                      <form method="POST" role="form" action="/refresh" class="center-block">
+                        <button type="submit" class="btn btn-primary" name="refresh" value="refresh">Rafraichir</button> 
+                      </form>  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- End Col -->
+
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
+                  Température extérieur
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                      <img src="static/images/thermometer.svg"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
+                    </div>
+                  <div class="col-md-6">
+                    <div class="content">
+                      <br/>
+                      <h3 class="text-bold mb-10">{{ Tout }} °C</h3>
+                      <a class="mb-10">{{ t }}</a>
+                      <form method="POST" role="form" action="/refresh" class="center-block">
+                        <button type="submit" class="btn btn-primary" name="refresh" value="refresh">Rafraichir</button> 
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- End Col -->
+
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
+                  Thermostat Chauffage
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                      <img src="static/images/thermostat.svg"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
+                    </div>
+                  <div class="col-md-6">
+                    <div class="content">
+                      <form role="form" method="POST" action="/set_thermostat">
+                        {% if Thermostat == true %} 
+                          <input type="checkbox" name="Thermostat" checked value="edit"> activé
+                        {% else %} 
+                          <input type="checkbox" name="Thermostat" unchecked > désactivé
+                        {% endif %}
+                        <div class="text text-primary fw-bold text-xs mb-1"><span> min : {{ Tmin }} </span></div>
+                        <input type="range" min="0" max="30" value={{Tmin}} class="slider" id="myRange" name="Tmin" oninput="num1.value=this.value">
+                        <div class="text text-primary fw-bold text-xs mb-1"><span> max : {{ Tmax }}</span></div>
+                        <input type="range" min="0" max="30" value={{Tmax}} class="slider" id="myRange" name="Tmax" oninput="num2.value=this.value">
+                        <br/>
+                        <button type="submit" class="btn btn-primary mb-3">Appliquer</button>
+                      </form> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- End Col -->
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                    <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
+                    Sonde Pression
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-6">
+                      <br/>
+                      <img src="static/images/pression.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
+                    </div>
+                    <div class="col-md-6">
+                      <div class="content">
+                        <br/>
+                        <h6 class="mb-10">Pression atm.</h6>
+                        <h3 class="text-bold mb-10">1024 hPa</h3>
+                        <form method="POST" action="/refresh" class="center-block">
+                          <button type="submit" class="btn btn-primary" name="" value="">Rafraichir</button> 
+                      </form>
+                      </div>
                     </div>
                 </div>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-3 col-xl-3 mb-6">
-                            <div class="card shadow border-start-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col me-2">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Température (°Celsius) & Thermostat</span></div>
-                                                <div class="text-dark fw-bold h5 mb-0">
-                                                    <form method="POST" action="/refresh" class="center-block">
-                                                        <p class="text-dark"> {{ temp }}</p><span></span>
-                                                        <button type="submit" value="Submit" class="btn btn-primary">Refresh</button>
-                                                    </form>   
-                                                    <br>
-                                                    <form method="POST" action="/set_thermostat" class="center-block">
-                                                        <div class="slidecontainer" id="slide_container_f">
-                                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span> T.min : {{ Tmin }} </span></div>
-                                                            <input type="range" min="0" max="20" value={{Tmin}} class="slider" id="myRange" name="Tmin" oninput="num1.value = this.value">
-                                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span> T.max : {{ Tmax }}</span></div>
-                                                            <input type="range" min="0" max="20" value={{Tmax}} class="slider" id="myRange" name="Tmax" oninput="num2.value = this.value">
-                                                        </div>
-                                                        <button type="submit" value="Submit" class="btn btn-primary">Apply</button>
-                                                    </form>   
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9 col-xl-6 mb-6">
-                            <div class="card shadow border-start-info py-2">
-                                <div class="card-body">
-                                    <div class="row align-items-center no-gutters">
-                                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span> Graphique de la temperature </span></div>
-                                                        <canvas id="myChart" width="600" height="400"></canvas>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-                </div>
-            </div>
+              </div>
+            </div>   
+          <!-- End Col -->
+          </div>
         </div>
+        <!-- End Row -->
+
+        <br/>
+
+        <!-- ========== Graphique  ========== -->
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card-style mb-30">
+              <div class="title d-flex flex-wrap justify-content-between">
+                <div class="left">
+                  <h6 class="text-medium mb-30">Températures</h6>
+                </div>
+              </div>
+              <div class="chart">
+                <canvas id="Chart1" style="width: 100%; height: 400px"></canvas>
+              </div>
+          </div>
+        </div>
+          <!-- End Row -->
+
+          <!-- ========== fin Graphique  ========== -->
+          <br/>
+        
+      </div>
     </div>
+    <!-- end container -->
+      
+    </main>
+    <!-- ======== main-wrapper end =========== -->
+
+    <script>
+
+      // fonction appelée lors d'un changement d'état d'un switch et qui fait une requete http get avec arguments pin (id) et checked (state)
+
+      function check(id,checked) {
+        $.ajax({
+           url: "/togglerelay",
+           type: "get",
+          data: {id:id, checked:checked},
+          success: function(response) {
+           $(status_class).html(response);
+          }
+        })
+      }
+      </script>
+      
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/Chart.min.js"></script>
+    <script src="static/js/dynamic-pie-chart.js"></script>
+    <script src="static/js/moment.min.js"></script>
+    <script src="static/js/fullcalendar.js"></script>
+    <script src="static/js/jvectormap.min.js"></script>
+    <script src="static/js/world-merc.js"></script>
+    <script src="static/js/polyfill.js"></script>
     
-    <script src="static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="static/js/chart.min.js"></script>
-    <script src="static/js/bs-init.js"></script>
-    <script src="static/js/theme.js"></script>
+    <script src="static/js/jquery-3.5.1.js"></script>
+    <script src="static/js/jquery.dataTables.min.js"></script>
+    <script src="static/js/dataTables.bootstrap5.min.js"></script>
+    <script src="static/js/script.js"></script>
     
     <script>
-        
-        // Global parameters:
-        // do not resize the chart canvas when its container does (keep at 600x400px)
-        Chart.defaults.global.responsive = false;
-  
-        var timeFormat = 'hh:mm:ss';
-  
-        function newDateString(hours, minutes, seconds) {
-          return moment().hour(hours).minute(minutes).second(seconds).format(timeFormat);
-        }
-  
-        // define the chart data
-        var chartData = {
-          labels : [{% for item in labels %}
-                     newDateString( {{item.hour}}, {{item.minute}}, {{item.second}} ),
-                    {% endfor %}],
-          datasets : [{
-              label: '{{ legend }}',
-              fill: true,
-              lineTension: 0.1,
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderCapStyle: 'butt',
-              borderDash: [],
-              borderDashOffset: 0.0,
-              borderJoinStyle: 'miter',
-              pointBorderColor: "rgba(75,192,192,1)",
-              pointBackgroundColor: "#fff",
-              pointBorderWidth: 1,
-              pointHoverRadius: 5,
-              pointHoverBackgroundColor: "rgba(75,192,192,1)",
-              pointHoverBorderColor: "rgba(220,220,220,1)",
-              pointHoverBorderWidth: 2,
-              pointRadius: 1,
-              pointHitRadius: 10,
-              data : [{% for item in values %}
-                        {{item}},
-                      {% endfor %}],
-              spanGaps: false
-          }]
-        }
-  
-        // get chart canvas
-        var holder = document.getElementById("myChart");
-        var ctx = document.getElementById("myChart").getContext("2d");
-  
-        // create a callback function for updating the caption
-        var original = Chart.defaults.global.legend.onClick;
-        Chart.defaults.global.legend.onClick = function(e, legendItem) {
-          update_caption(legendItem);
-          original.call(this, e, legendItem);
-        };
-  
-        // create the chart using the chart canvas
-        var myChart = new Chart(ctx, {
-          type: 'line',
-          data: chartData,
-          options: {
-            tooltips: {
-              enabled: true,
-              mode: 'single',
-              callbacks: {
-                label: function(tooltipItems, data) {
-                         firstPointCtx = "First Point Selected: (2:20PM, 72.3 degrees)";
-                         return tooltipItems.yLabel + ' degrees';
-                       }
-              }
-            },
+    $(document).ready( function () {
+        $('#example').DataTable();
+    } );</script>
+
+    <script>
+    // =========== chart start
+    var ctx1 = document.getElementById("Chart1").getContext("2d");
+    var chart1 = new Chart(ctx1, {
+      // The type of chart we want to create
+      type: "line", // also try bar or other graph types
+
+      // The data for our dataset
+      data: {
+        labels: 
+        [{% for item in labels %}
+          "{{item}}",
+          {% endfor %}],
+        // Information about the dataset
+        datasets: [
+          {
+            label: "intérieur",
+            backgroundColor: "transparent",
+            borderColor: "#2F80ED",
+            data: [{% for item in inhouse_temp %}
+              "{{item}}",
+              {% endfor %}],
+            pointBackgroundColor: "transparent",
+            pointHoverBackgroundColor: "#2F80ED",
+            pointBorderColor: "transparent",
+            pointHoverBorderColor: "#fff",
+            pointHoverBorderWidth: 5,
+            pointBorderWidth: 5,
+            pointRadius: 8,
+            pointHoverRadius: 8,
+            order: 2
+          },{
+            label: 'extérieur',
+            display : true,
+            data: [10, 10, 10, 10, 15, 18, 23, 22, 10, 5 ,2,1,0],
+            backgroundColor: "transparent",
+            borderColor: "#f39c12",
+            data: [{% for item in outside_temp %}
+              "{{item}}",
+              {% endfor %}],
+            pointBackgroundColor: "transparent",
+            pointHoverBackgroundColor: "#2F80ED",
+            pointBorderColor: "transparent",
+            pointHoverBorderColor: "#fff",
+            pointHoverBorderWidth: 5,
+            pointBorderWidth: 5,
+            pointRadius: 8,
+            pointHoverRadius: 8,
+            order: 2
+          },
+          {
+            label: 'Thermostat Chauffage',
+            lineTension: 0,
+            steppedLine: true,
+            backgroundColor: "transparent",
+            borderColor: "#f12b24",
+            data: [{% for item in relay3 %}
+              "{{item}}",
+              {% endfor %}],
+            pointBackgroundColor: "transparent",
+            pointHoverBackgroundColor: "#2F80ED",
+            pointBorderColor: "transparent",
+            pointHoverBorderColor: "#fff",
+            pointHoverBorderWidth: 5,
+            pointBorderWidth: 5,
+            pointRadius: 8,
+            pointHoverRadius: 8,
+            order: 3
           }
-        });
-  
-        // get the text element below the chart
-        var pointSelected = document.getElementById("pointSelected");
-  
-        // create a callback function for updating the selected index on the chart
-        holder.onclick = function(evt){
-          var activePoint = myChart.getElementAtEvent(evt);
-          console.log(activePoint);
-          console.log('x:' + activePoint[0]._view.x);
-          console.log('maxWidth: ' + activePoint[0]._xScale.maxWidth);
-          console.log('y: ' + activePoint[0]._view.y);
-          console.log('index: ' + activePoint[0]._index);
-          pointSelected.innerHTML = 'Point selected... index: ' + activePoint[0]._index;
-        };
-      </script>
-</body>
+        ],
+      },
+
+      // Configuration options
+      options: {
+        tooltips: {
+          callbacks: {
+            labelColor: function (tooltipItem, chart) {
+              return {
+                backgroundColor: "#ffffff",
+              };
+            },
+          },
+          intersect: false,
+          backgroundColor: "#f9f9f9",
+          titleFontColor: "#8F92A1",
+          titleFontColor: "#8F92A1",
+          titleFontSize: 12,
+          bodyFontColor: "#171717",
+          bodyFontStyle: "bold",
+          bodyFontSize: 16,
+          multiKeyBackground: "transparent",
+          displayColors: false,
+          xPadding: 30,
+          yPadding: 10,
+          bodyAlign: "center",
+          titleAlign: "center",
+        },
+
+        title: {
+          display: false,
+        },
+        legend: {
+          display: false,
+        },
+
+        scales: {
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+                drawTicks: false,
+                drawBorder: false,
+              },
+              ticks: {
+                padding: 20,
+                max: 25,
+                min: -5,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              gridLines: {
+                drawBorder: false,
+                color: "rgba(143, 146, 161, .1)",
+                zeroLineColor: "rgba(143, 146, 161, .1)",
+              },
+              ticks: {
+                padding: 20,
+                maxTicksLimit:30,
+              },
+            },
+          ],
+        },
+      },
+    });
+    // =========== end chart 
+  </script>
+  </body>
 </html>
