@@ -21,7 +21,7 @@
     <script src="static/js/Chart.min.js"></script>
     <script src="static/js/jquery.dataTables.min.js"></script>
     <script src="static/js/dataTables.bootstrap5.min.js"></script> 
-    <!--- <script src="static/js/query-3.5.1.js"></script> --->
+    <script src="static/js/query-3.5.1.js"></script> 
     <script src="static/js/mychart.js"></script> 
   </head>
 
@@ -45,7 +45,7 @@
                         <img class="img-profile" src="static/images/profile.png"></a>
                         <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in ">
                             <li><a class="dropdown-item" href="#exampleModal" data-bs-toggle="modal" data-bs-target="#exampleModal">A propos</a></li>
-                            <!--- <li><a class="dropdown-item" href="/reboot">Reboot</a></li>   --->
+                            <li><a class="dropdown-item" href="/reboot">Reboot</a></li>   
                             <li><a class="dropdown-item" href="/shutdown">Shutdown</a></li> 
                         </div>
                       </div>
@@ -182,7 +182,6 @@
                       class="table table-striped data-table display compact" style="width: 100%; max-height: 100px;">
                       <thead>
                         <tr>
-                          <th>ID</th>
                           <th>Date</th>
                           <th>Heure</th>
                           <th>Description</th>
@@ -191,7 +190,6 @@
                           <tbody>
                             {% for e in eventlog %}
                             <tr>
-                                <td>{{e["id"]}}</td>
                                 <td>{{e["date"]}}</td>
                                 <td>{{e["time"]}}</td>
                                 <td>{{e["what"]}}</td>

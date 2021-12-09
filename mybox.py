@@ -52,10 +52,12 @@ Thermostat = True           # valeur True ou False pour déclenchement du chauff
 MAXSIZE = 100               # taille maximale de conservation des mesures et eventlog
 INTERVAL_TIME_MESURE = 900  #intervalle de temps entre mesures températures 
 camera = False              # activation de la caméra (picamera.ppdlab.ch) pour visualiser l'atelier
-event = { "date" : "", 
+event = { "id"   : "",
+          "date" : "", 
           "time" : "", 
           "what" : ""}      # un type d'eventlog affiché sur l'interface
 eventlog = []               # liste des eventlog
+n = 0                       # nombre d'evenlog enregistré
 
 DIRECTORY   = "/home/pi/mybox/"             # répertoire par défaut
 FILENAME    = DIRECTORY + "myboxdata.bin"   # fichier de sauvegarde et restauration des données
@@ -91,13 +93,16 @@ def LogEvent(message):
 
     # Log des événements dans une table et dans fichier log
 
-    global eventlog, event, MAXSIZE
+    global eventlog, event, MAXSIZE, n
 
     now = datetime.datetime.now()
     d = now.strftime("%d/%m/%Y")
     t = now.strftime("%H:%M")
-    event = { "date" : d, "time" : t, "what" : message}
+    n = n+1
+    id = n
+    event = { "id" : id , "date" : d, "time" : t, "what" : message}
     eventlog.insert(0,event)
+
     l = len(eventlog)
     if l > MAXSIZE-1:
         eventlog.pop(l-1)
@@ -109,7 +114,7 @@ def LoadTemplateData():
     # chargement de l'ensemble des données dans un template transmis au front-end bootstrap 
 
     global inhouse_temp, outside_temp, times, Tmin, Tmax, Thermostat, chauffage, Tin, Tout, pins, camera, eventlog
-    return      {
+    return      {   
                     'pins': pins,
                     'labels' : times, 
                     'Tin' : Tin,
@@ -143,7 +148,7 @@ def LoadData():
 
     # Chargement des données enregistrées sur disque
 
-    global times, chauffage, outside_temp, inhouse_temp, eventlog
+    global times, chauffage, outside_temp, inhouse_temp, eventlog, n
 
     try: 
         with open(FILENAME, 'rb') as file:
@@ -152,8 +157,9 @@ def LoadData():
             outside_temp      = pickle.load(file)
             inhouse_temp = pickle.load(file)
             eventlog = pickle.load(file)
+            n = len(eventlog)
     except:
-        LogEvent("erreur dans le chargement des données depuis fichier de sauvegarde. ")
+        LogEvent("erreur dans le chargement des données sauvegardées ou fichier encore inexistant. ")
    
 
 @app.route("/camera", methods=["GET","POST"])
@@ -195,7 +201,7 @@ def reboot():
 
     return   
 
-@app.route("/set_thermostat", methods=['POST'])
+@app.route("/set_thermostat", methods=['GET','POST'])
 def set_thermostat():
 
     # Thermostat, valeur max et min et activation/arrêt automatique
@@ -264,7 +270,7 @@ def togglerelay():
 
 @app.route("/", methods=["GET",'POST'])
 def main():
-
+    read_temp()
     templateData = LoadTemplateData()
     return render_template('main.html', **templateData) 
 
@@ -336,9 +342,8 @@ def loop():
 if __name__ == "__main__":
     
     app.secret_key = os.urandom(12)
-    
-    LogEvent("###     MyBox  V4.0     ###")
-    LogEvent("Démarrage de l'application MyBox V4.0")
+
+    LogEvent("### MyBox V4.0 (12/2021) ###")
     LogEvent("Fréquence des mesures de températures : " + str(int(INTERVAL_TIME_MESURE/60)) + " mn")
     LogEvent("Démarrage du thread de lecture des mesures")
     
