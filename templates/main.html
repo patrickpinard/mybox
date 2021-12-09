@@ -4,48 +4,38 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> MyBox </title>
+    <title> MyBox V4.0</title>
 
-    <!-- ========== All CSS files linkup ========= -->
+    <!-- ========== CSS files bootrap & toggle ========= -->
     <link rel="stylesheet" href="static/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="static/css/lineicons.css" />
-    <link rel="stylesheet" href="static/css/materialdesignicons.min.css" />
-    <link rel="stylesheet" href="static/css/fullcalendar.css" />
+    <!--<link rel="stylesheet" href="static/css/lineicons.css" />
+    <link rel="stylesheet" href="static/css/materialdesignicons.min.css" />  
     <link rel="stylesheet" href="static/css/morris.css" />
     <link rel="stylesheet" href="static/css/main.css" />
+    <link rel="stylesheet" href="static/css/style.css" />-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"/>
     <link rel="stylesheet" href="static/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="static/css/style.css" />
 
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.css"/>
+    <!-- ========== CSS files for dataTables ========= -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.js"></script>
-    
+    query-3.5.1.js
     <!-- ========== script pour toggle checkbox  ========= -->
-    
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
     <link rel="stylesheet "href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/css/bootstrap4-toggle.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle/js/bootstrap4-toggle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- ========= All Javascript files linkup ======== -->
+
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/Chart.min.js"></script>
+    <script src="static/js/jquery.dataTables.min.js"></script>
+    <script src="static/js/dataTables.bootstrap5.min.js"></script> 
+    <script src="static/js/query-3.5.1.js"></script> 
 
   </head>
-
-  <!--- <script>
-    function display_time(){
-     var content = document.getElementById('time');
-     xhr = new XMLHttpRequest();
-     xhr.open('POST', '/display_time', false);
-     xhr.onload = function() {
-         content.innerHTML = this.responseText;
-     };
-     xhr. send();
-  }
-  setInterval(function(){ display_time()},1000);
-  </script>
-  --->
 
   <body>
     <!-- ========== Nav bar ========= -->
@@ -54,29 +44,24 @@
           <div id="content">
               <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar ">
                   <div class="container-fluid">
-                    
+                 
+                  <!-- Titre -->   
                   <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" style="font-size: 32px;">
-                    <img src="static/images/mybox.jpg""  style="width: 100px;height: 80px; margin:0px">
+                    <img src="static/images/mybox.jpeg"  style="width: 100px;height: 80px; margin:0px">
                   </form>
+                  <!-- fin Titre --> 
 
-                  <!--- <div class="text-bold" id="time" style="font-size: 16px;">Time goes here</div>  --->
-
-                  <button class="btn float-end" style="font-size: 32px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" role="button">
-                      <i class="bi bi-menu-button-fill" data-bs-toggle="offcanvas" data-bs-target="#offcanvas">  </i>
-                  </button>
-
-                  <!-- dropdown menu 
+                  <!-- Menu -->                  
                   <div class="d-none d-sm-block topbar-divider"></div>
                     <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                      <img class="border rounded-circle img-profile" src="static/images/profile/profile.png"></a>
-                      <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                          <li><a class="dropdown-item" href="#offcanvasExample" role="button">Menu</a></li>
+                      <img class="img-profile" src="static/images/profile.png"></a>
+                      <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in ">
                           <li><a class="dropdown-item" href="#exampleModal" data-bs-toggle="modal" data-bs-target="#exampleModal">A propos</a></li>
-                          <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                                      
+                          <li><a class="dropdown-item" href="/reboot">Reboot</a></li>   
+                          <li><a class="dropdown-item" href="/shutdown">Shutdown</a></li> 
                       </div>
                     </div>
-                  -->
+                  </div>  
                   </div>     
                       <!-- Modal (A propose de) -->
                       <div class="modal fade" id="exampleModal" tabindex="-5 " aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -88,310 +73,173 @@
                             </div>
                             <div class="modal-body">
                               MyBox est un boitier électrique comprenant 4 relais avec prises 240V commandées par un Raspberry Pi zero (GPIO). 
-                              Il comprend aussi une sonde de température de type 18BS20 ainsi qu'un thermostat pour piloter le relai n°3 (chauffage) en fonction de températures minimale et maximale.
-                              L'ensemble se contrôle au travers d'une interface web en Bootstrap 5 / Flask. <br/>
+                              Il comprend aussi une sonde de température de type 18BS20 ainsi qu'un thermostat pour piloter le chauffage en fonction de températures minimale et maximale définie.
+                              L'ensemble se contrôle au travers d'une interface web en Bootstrap 5 / Flask / Ajax compatible avec les smartphones. <br/>
                               <br/>
                             </div>
                             <div class="modal-footer">
-                              V3.0 Patrick Pinard 2021
+                              V4.0 Patrick Pinard 2021
                             </div>
                           </div>
                         </div>
                       </div>
                   </div>
 
-                  <!-- Canvas -->                  
-
-                  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-keyboard="false" data-bs-backdrop="false">
-                    <div class="offcanvas-header">
-                        <h1 class="offcanvas-title d-none d-sm-block" id="offcanvas">   Menu</h1>
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body px-50">
-                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
-                            
-                            <li>
-                              <a href="/refresh"" class="nav-link text-truncate">
-                                <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-sm-inline">   Dashboard</span> </a>
-                            </li>
-                            <li>
-                                <a href="/table" class="nav-link text-truncate">
-                                    <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">   Table</span></a>
-                            </li>
-                            <li>
-                              <a href="/graph" class="nav-link text-truncate">
-                                  <i class="fs-5 bi-graph-up"></i><span class="ms-1 d-none d-sm-inline">   Graphique</span></a>
-                            </li>
-                            <li>
-                              <a href="#exampleModal" class="nav-link text-truncate" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i class="fs-5 bi-chat-text"></i><span class="ms-1 d-none d-sm-inline">   A propos </span></a>
-                            </li>
-                           
-                            <li>
-                              <a href="#"" class="nav-link text-truncate">
-                                  <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">   Profile</span> </a>
-                            </li>
-                            
-                            <li>
-                                <a href="/logout"" class="nav-link text-truncate">
-                                    <i class="fs-5 bi-door-closed"></i><span class="ms-1 d-none d-sm-inline">   Logout</span> </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- end Canvas --> 
+                  
                   </div>
               </nav>
           </div>
       </div>
       <!-- ========== end Nav bar ========= -->
 
-      <!-- ========== Cartes relais  ========== -->
+      <!-- ========== Relay, Thermostat and Camera view  ========== -->
 
       <div class="container-fluid">
         <div class="title-wrapper pt-0"> 
-          <a class="mb-10">mybox/dashboard</a>   
           <div class="row">
             <div class="col-xl-3 col-lg-4 col-sm-6">
               <div class="card h-100">
                 <div class="card-header">
-                  Relai 1
+                  <span><i class="bi bi-plug me-2"></i></span> Relais
                 </div>
-                <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                        <img src="static/images/lamp_on.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
-                    </div>
-                  <div class="col-md-6">
-                    <div class="content">
-                      <br/>
-                      <h3 class="text-bold mb-10" style="margin:0px">Lampe</h3> <br/>
-                      
-                        {% if pins[17].state == true %} 
-                        <input type="checkbox"  id="17" value="17" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)" >
-                        {% else %} 
-                        <input type="checkbox"  id="17" value="17" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)" >
-                        {% endif %} 
-                      
-                    </div>
-                  </div>
+                <br/>
+                <div class="form-check pl-0">
+                  {% if pins[17].state == true %} 
+                  <input id="17" value="17" class="form-check-input" type="checkbox" data-toggle="toggle" unchecked onchange="check(this.id,this.checked)">
+                  {% else %} 
+                  <input id="17" value="17" class="form-check-input" type="checkbox" data-toggle="toggle" checked onchange="check(this.id,this.checked)">
+                  {% endif %} 
+                  
+                  <label for="17" class="form-check-label text-bold mb-20" style="margin:20px; font-size:20px"> Lampe LED </label>
                 </div>
+                <br />
+                <div class="form-check pl-0">
+                  {% if pins[27].state == true %} 
+                  <input id="27" value="27" class="form-check-input" type="checkbox" data-toggle="toggle" unchecked onchange="check(this.id,this.checked)">
+                  {% else %} 
+                  <input id="27" value="27" class="form-check-input" type="checkbox" data-toggle="toggle" checked onchange="check(this.id,this.checked)">
+                  {% endif %} 
+                  <label for="27" class="form-check-label text-bold mb-20" style="margin:20px; font-size:20px"> Prise 240V </label>
+                </div>
+                <br />
+                <div class="form-check pl-0">
+                  {% if pins[22].state == true %} 
+                  <input id="22" value="22" class="form-check-input" type="checkbox" data-toggle="toggle" unchecked onchange="check(this.id,this.checked)">
+                  {% else %} 
+                  <input id="22" value="22" class="form-check-input" type="checkbox" data-toggle="toggle" checked onchange="check(this.id,this.checked)">
+                  {% endif %} 
+                  <label for="22" class="form-check-label text-bold mb-20" style="margin:20px ; font-size:20px"> Chauffage </label>
+                </div>
+                <br />
+                <div class="form-check pl-0">
+                  {% if camera == true %}       
+                  <input id="CAMERA" value="ON" class="form-check-input" type="checkbox" data-toggle="toggle" checked onchange="camera(this.checked)">
+                  {% else %} 
+                  <input id="CAMERA" value="OFF" class="form-check-input" type="checkbox" data-toggle="toggle" unchecked onchange="camera(this.checked)">
+                  {% endif %} 
+                  <label class="text-bold mb-20" style="margin:20px; font-size:20px" > Camera atelier </label> 
+                </div>     
               </div>
             </div>
-
-            <!-- End Col -->
+          
+            
 
             <div class="col-xl-3 col-lg-4 col-sm-6">
               <div class="card h-100">
                 <div class="card-header">
-                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
-                  Relai 2
+                  <span><i class="bi bi-thermometer-snow me-2"></i></span> Températures & Thermostat
                 </div>
                 <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                      <img src="static/images/electric-outlet.png" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
-                    </div>
-                  <div class="col-md-6">
-                    <div class="content">
-                      <br/>
-                      <h3 class="text-bold mb-10" style="margin:0px">Prise</h3> <br/>
-
-                      {% if pins[27].state == true %} 
-                        <input type="checkbox"  id="27" value="27" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)" >
-                      {% else %} 
-                        <input type="checkbox" id="27" value="27" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)" >
-                      {% endif %} 
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- End Col -->
-
-            <div class="col-xl-3 col-lg-4 col-sm-6">
-              <div class="card h-100">
-                <div class="card-header">
-                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
-                  Relai 3
-                </div>
-                <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                      <img src="static/images/radiateur.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
-                    </div>
-                  <div class="col-md-6">
-                    <div class="content">
-                      <br/>
-                      <h3 class="text-bold mb-10" style="margin:0px">Chauffage</h3> <br/>
-                      
-                        {% if Thermostat == true %} 
-                          <a>Thermostat <br/> activé !</a>
-                        {% else %} 
-                          {% if pins[22].state == true %} 
-                          <input type="checkbox"  id="22" value="22" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)" >
-                          {% else %} 
-                          <input type="checkbox" id="22" value="22" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)">
-                          {% endif %} 
-                        {% endif %} 
+                    <div class="content" style="margin:10px">
+                      <span><i class="bi bi-house me-2" style="font-size:70px; margin-left: 10px;" ></i> {{ Tin }} (°C)</span> 
+                      <span><i class="bi bi-sun me-2" style="font-size:70px; margin-left: 10px;" ></i></span> {{ Tout }} (°C)
                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                      <form method="POST" role="form" action="/" class="center-block">
+                        <button type="submit" class="btn btn-primary"  name="refresh" value="refresh">Rafraichir</button> 
+                        <label class="text mb-10" style="margin:20px; margin-left:10px"> {{ t }} </label>
+                      </form> 
 
-            <!-- End Col -->
+                      <br />
 
-            <div class="col-xl-3 col-lg-4 col-sm-6">
-              <div class="card h-100">
-                <div class="card-header">
-                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
-                  Relai 4
-                </div>
-                <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                      <img src="static/images/switcher.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
-                    </div>
-                  <div class="col-md-6">
-                    <div class="content">
-                      <br/>
-                      <h3 class="text-bold mb-10" style="margin:0px">n/a</h3> <br/>
-                      
-                        {% if pins[23].state == true %} 
-                        <input type="checkbox" id="23" value="23" class='toggle' data-size="lg" unchecked data-toggle="toggle" onchange="check(this.id,this.checked)">
-                        {% else %} 
-                        <input type="checkbox" id="23" value="23" class='toggle' data-size="lg" checked data-toggle="toggle" onchange="check(this.id,this.checked)">
-                        {% endif %} 
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End Col -->
-          </div>
-          <!-- End row -->
-          <!-- ========== fin Cartes relais  ========== -->
-          <br/>
-          <!-- ========== Cartes Temperature, Pression atm. & Thermostats ========== -->
-          <div class="row">
-            <div class="col-xl-3 col-lg-4 col-sm-6">
-              <div class="card h-100">
-                <div class="card-header">
-                  Température intérieur
-                </div>
-                <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                      <img src="static/images/inhousetemp.png"" class="img-fluid rounded-start" style="width: 80px;height: 80px; margin:20px">
-                    </div>
-                  <div class="col-md-6">
-                    <div class="content">
-                      <br/>
-                      <h3 class="text-bold mb-10">{{ Tin }} °C</h3>
-                      <a class="mb-10">{{ t }}</a>
-                      <form method="POST" role="form" action="/refresh" class="center-block">
-                        <button type="submit" class="btn btn-primary" name="refresh" value="refresh">Rafraichir</button> 
-                      </form>  
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- End Col -->
-
-            <div class="col-xl-3 col-lg-4 col-sm-6">
-              <div class="card h-100">
-                <div class="card-header">
-                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
-                  Température extérieur
-                </div>
-                <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                      <img src="static/images/thermometer.svg"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
-                    </div>
-                  <div class="col-md-6">
-                    <div class="content">
-                      <br/>
-                      <h3 class="text-bold mb-10">{{ Tout }} °C</h3>
-                      <a class="mb-10">{{ t }}</a>
-                      <form method="POST" role="form" action="/refresh" class="center-block">
-                        <button type="submit" class="btn btn-primary" name="refresh" value="refresh">Rafraichir</button> 
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- End Col -->
-
-            <div class="col-xl-3 col-lg-4 col-sm-6">
-              <div class="card h-100">
-                <div class="card-header">
-                  <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
-                  Thermostat Chauffage
-                </div>
-                <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                      <img src="static/images/thermostat.svg"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
-                    </div>
-                  <div class="col-md-6">
-                    <div class="content">
                       <form role="form" method="POST" action="/set_thermostat">
                         {% if Thermostat == true %} 
-                          <input type="checkbox" name="Thermostat" checked value="edit"> activé
+                          <input type="checkbox" name="Thermostat" checked value="edit" style="width: 30px; height: 30px">  
                         {% else %} 
-                          <input type="checkbox" name="Thermostat" unchecked > désactivé
+                          <input type="checkbox" name="Thermostat" unchecked style="width: 30px; height: 30px">
                         {% endif %}
-                        <div class="text text-primary fw-bold text-xs mb-1"><span> min : {{ Tmin }} </span></div>
-                        <input type="range" min="0" max="30" value={{Tmin}} class="slider" id="myRange" name="Tmin" oninput="num1.value=this.value">
-                        <div class="text text-primary fw-bold text-xs mb-1"><span> max : {{ Tmax }}</span></div>
-                        <input type="range" min="0" max="30" value={{Tmax}} class="slider" id="myRange" name="Tmax" oninput="num2.value=this.value">
+                        <label class="text-bold mb-10" style="font-size:20px; margin:20px"> Thermostat </label>
+                        <div class="text text-primary fw-bold text-xs mb-1"><span> Temp. min : {{ Tmin }} </span></div>
+                        <input type="range" min="0" max="30" value={{Tmin}} class="slider" style="width: 250px; height: 30px" id="myRange" name="Tmin" oninput="num.value = this.value">
+                        <output class="text text-primary fw-bold text-xs mb-1" id="num">0</output>
+                        <div class="text text-primary fw-bold text-xs mb-1"><span> Temp. max : {{ Tmax }}</span></div>
+                        <input type="range" min="0" max="30" value={{Tmax}} class="slider" style="width: 250px; height: 30px" id="myRange" name="Tmax" oninput="num2.value=this.value">
+                        <output class="text text-primary fw-bold text-xs mb-1" id="num2">0</output>
                         <br/>
                         <button type="submit" class="btn btn-primary mb-3">Appliquer</button>
                       </form> 
+
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- End Col -->
-            <div class="col-xl-3 col-lg-4 col-sm-6">
+            <div class="col-xl-6 col-lg-4 col-sm-6">
               <div class="card h-100">
                 <div class="card-header">
-                    <!--- <h4 class="text-bold mb-10">Relai 2</h4> -->
-                    Sonde Pression
+                  <span><i class="bi bi-table me-2"></i></span> Event Logs
                 </div>
-                <div class="row g-0">
-                    <div class="col-md-6">
-                      <br/>
-                      <img src="static/images/pression.png"" class="img-fluid rounded-start" style="width: 100px;height: 100px; margin:20px">
-                    </div>
-                    <div class="col-md-6">
-                      <div class="content">
-                        <br/>
-                        <h6 class="mb-10">Pression atm.</h6>
-                        <h3 class="text-bold mb-10">1024 hPa</h3>
-                        <form method="POST" action="/refresh" class="center-block">
-                          <button type="submit" class="btn btn-primary" name="" value="">Rafraichir</button> 
-                      </form>
-                      </div>
-                    </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      id="eventlog"
+                      class="table table-striped data-table display compact" style="width: 100%; max-height: 100px;">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Heure</th>
+                          <th>Description</th>
+                        </tr>
+                        </thead>
+                          <tbody>
+                            {% for e in eventlog %}
+                            <tr>
+                                <td>{{e["date"]}}</td>
+                                <td>{{e["time"]}}</td>
+                                <td>{{e["what"]}}</td>
+                            </tr> 
+                            {% endfor %}
+                          </tfoot>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>   
-          <!-- End Col -->
+            </div>
+          </div>
+          <!-- End Row -->
+        </div>
+        <br/>
+
+        <!-- ========== Camera  ========== -->
+      {% if camera == true %} 
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="col-xl-12 col-lg-4 col-sm-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <span><i class="bi bi-camera-video me-2"></i></span> Camera Atelier  
+                </div>
+                <br/>
+                <div class="form-check pl-0">
+                  <center>
+                    <img src="http://picamera.ppdlab.ch/video_feed" width="100%" > 
+                  </center>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- End Row -->
+      {% endif %}
+        <!-- ========== fin Camera  ========== -->
 
         <br/>
 
@@ -399,29 +247,35 @@
         
         <div class="row">
           <div class="col-lg-12">
-            <div class="card-style mb-30">
-              <div class="title d-flex flex-wrap justify-content-between">
-                <div class="left">
-                  <h6 class="text-medium mb-30">Températures</h6>
-                </div>
+            <!--- <div class="card-style mb-30"> --->
+            <div class="card h-300">
+              <div class="card-header">
+                <span><i class="bi bi-graph-up me-2"></i></span> Graphique : Thermostat & Températures 
               </div>
+              <br />
+              <!--- <div class="title d-flex flex-wrap justify-content-between">  --->
               <div class="chart">
-                <canvas id="Chart1" style="width: 100%; height: 400px"></canvas>
+                <canvas id="Chart1" style="width: 100%; height: 300px"></canvas>
               </div>
           </div>
         </div>
-          <!-- End Row -->
-
-          <!-- ========== fin Graphique  ========== -->
-          <br/>
-        
+        <!-- ========== fin Graphique  ========== -->
+        <br/>
+      <!-- end container -->  
       </div>
     </div>
-    <!-- end container -->
-      
     </main>
     <!-- ======== main-wrapper end =========== -->
-
+    
+    <script>
+      $(document).ready( function () {
+          $('#eventlog').DataTable({
+        "scrollY"       : "300px",
+        "scrollCollapse": true,
+        "paging"        : true,
+        "stateSave"     : true
+    } );
+      } );</script>
     <script>
 
       // fonction appelée lors d'un changement d'état d'un switch et qui fait une requete http get avec arguments pin (id) et checked (state)
@@ -438,27 +292,23 @@
       }
       </script>
       
+      <script>
 
-    <!-- ========= All Javascript files linkup ======== -->
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/Chart.min.js"></script>
-    <script src="static/js/dynamic-pie-chart.js"></script>
-    <script src="static/js/moment.min.js"></script>
-    <script src="static/js/fullcalendar.js"></script>
-    <script src="static/js/jvectormap.min.js"></script>
-    <script src="static/js/world-merc.js"></script>
-    <script src="static/js/polyfill.js"></script>
-    
-    <script src="static/js/jquery-3.5.1.js"></script>
-    <script src="static/js/jquery.dataTables.min.js"></script>
-    <script src="static/js/dataTables.bootstrap5.min.js"></script>
-    <script src="static/js/script.js"></script>
-    
-    <script>
-    $(document).ready( function () {
-        $('#example').DataTable();
-    } );</script>
+        // fonction appelée lors d'un changement d'état du switch camera pour visualiser le stream de picamera.ppdlab.ch:9595
+  
+        function camera(value) {
+          $.ajax({
+             url: "/camera",
+             type: "get",
+            data: {value:value},
+            success: function(response) {
+             $(status_class).html(response);
+            }
+          })
+        }
+        </script>
 
+    
     <script>
     // =========== chart start
     var ctx1 = document.getElementById("Chart1").getContext("2d");
@@ -478,9 +328,11 @@
             label: "intérieur",
             backgroundColor: "transparent",
             borderColor: "#2F80ED",
-            data: [{% for item in inhouse_temp %}
+            data: [
+              {% for item in inhouse_temp %}
               "{{item}}",
-              {% endfor %}],
+              {% endfor %}
+            ],
             pointBackgroundColor: "transparent",
             pointHoverBackgroundColor: "#2F80ED",
             pointBorderColor: "transparent",
@@ -489,11 +341,9 @@
             pointBorderWidth: 5,
             pointRadius: 8,
             pointHoverRadius: 8,
-            order: 2
+            order: 1,
           },{
             label: 'extérieur',
-            display : true,
-            data: [10, 10, 10, 10, 15, 18, 23, 22, 10, 5 ,2,1,0],
             backgroundColor: "transparent",
             borderColor: "#f39c12",
             data: [{% for item in outside_temp %}
@@ -507,15 +357,15 @@
             pointBorderWidth: 5,
             pointRadius: 8,
             pointHoverRadius: 8,
-            order: 2
+            order: 2,
           },
           {
-            label: 'Thermostat Chauffage',
+            label: 'chauffage',
             lineTension: 0,
             steppedLine: true,
             backgroundColor: "transparent",
             borderColor: "#f12b24",
-            data: [{% for item in relay3 %}
+            data: [{% for item in chauffage %}
               "{{item}}",
               {% endfor %}],
             pointBackgroundColor: "transparent",
@@ -526,7 +376,7 @@
             pointBorderWidth: 5,
             pointRadius: 8,
             pointHoverRadius: 8,
-            order: 3
+            order: 3,
           }
         ],
       },
@@ -588,7 +438,7 @@
               },
               ticks: {
                 padding: 20,
-                maxTicksLimit:30,
+                maxTicksLimit:20,
               },
             },
           ],

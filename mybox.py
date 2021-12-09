@@ -2,11 +2,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 # Auteur    : Patrick Pinard
-# Date      : 13.11.2021
+# Date      : 08.12.2021
 # Objet     : Pilotage modules relais avec interface web basée sur API RESTful Flask et bootstrap sur PI zero 
-# Version   :   3.2 - optimisation code et requete http/get lors changement d'état d'un des switches checkbox toggle
+# Version   :   3.5 - ajout de l'eventlog (en cours)
+#               3.4 - correctif affichage graph avec chauffage
+#               3.3 - simplification du template html pour être plus compatible avec IOS
+#               3.2 - optimisation code et requete http/get lors changement d'état d'un des switches checkbox toggle
 #               3.1 - ajout du checkbox toggle sur relais
-#               3.0 - réorganisation des données dans des dictionnaires et ajout de pages html distinctes pour graphiques et tables 
+#               3.0 - réorganisation des données dans des dictionnaires  
 #               2.0 - ajout d'un Framework Bootstrap pour un affichage plus pro
 #               1.3 - ajout de la lecture de température via un thread
 #               1.2 - modification du log file
@@ -18,6 +21,7 @@
 #  [] = "alt/option" + "5" ou "6"
 #   ~  = "alt/option" + n    
 #   \  = Alt + Maj + / 
+
 
 
 
@@ -46,13 +50,14 @@ inhouse_temp = []
 sensors = []
 Tin = 0
 Tout = 0
-temp = 0            # température de la sonde DS18B20
+temp = 0            
 Tmin = 5            # température minimale pour enclenchement du thermostat du chauffage
 Tmax = 10           # température maximale pour déclenchement du thermostat du chauffage
 Thermostat = True   # valeur True ou False pour déclenchement du chauffage sur relai 3
 MAXSIZE = 100
 INTERVAL_TIME_MESURE = 900
-DEBUG = True
+DEBUG = False 
+camera = False 
 
 pins = {
         17: {'name': 'Relai 1', 'state': GPIO.HIGH, 'status': "OFF"},  
@@ -61,11 +66,11 @@ pins = {
         23: {'name': 'Relai 4', 'state': GPIO.HIGH, 'status': "OFF"}
     }
 
+event = { "date" : "", "time" : "", "what" : ""}
+eventlog = []
 
-# Création UTILISATEUR / MOT DE PASSE: 
-PASSWORD    = 'password'
-USERNAME    = 'admin'
-FILENAME    = "data.bin"
+FILENAME    = "/home/pi/mybox/myboxdata.bin"
+
 
 # Création du FICHIER LOG: 
 logging.basicConfig(filename='/home/pi/mybox/mybox.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -84,8 +89,24 @@ for pin in pins:
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
 
+
+def LogEvent(message):
+    # Log des événements dans une table
+    global eventlog, event, MAXSIZE
+
+    now = datetime.datetime.now()
+    d = now.strftime("%d/%m/%Y")
+    t = now.strftime("%H:%M")
+    event = { "date" : d, "time" : t, "what" : message}
+    eventlog.insert(0,event)
+    l = len(eventlog)
+    if l > MAXSIZE-1:
+        eventlog.pop(l-1)
+    return
+
 def LoadTemplateData():
-    global legend, labels, values, inhouse_temp, outside_temp, times, temp, t, times, Tmin, Tmax, Thermostat, chauffage, Tin, Tout, pins
+    # chargement de l'ensemble des données dans un template transmis au front-end bootstrap Flask
+    global legend, labels, values, inhouse_temp, outside_temp, times, temp, t, times, Tmin, Tmax, Thermostat, chauffage, Tin, Tout, pins, camera,eventlog
     return      {
                     'message': "message",
                     'pins': pins,
@@ -100,127 +121,113 @@ def LoadTemplateData():
                     'Tmax' : Tmax,
                     'Thermostat' : Thermostat,
                     't' : t,
-                    'relay3': chauffage
+                    'chauffage': chauffage,
+                    'camera' : camera,
+                    'eventlog' : eventlog
                 }
 
 def SaveData():
-    global times, chauffage, outside_temp, inhouse_temp
+    # Sauvegarde des données enregistrées sur disque
+    global times, chauffage, outside_temp, inhouse_temp,eventlog
     try: 
         with open(FILENAME, 'wb') as file:
             pickle.dump(times, file)
             pickle.dump(chauffage, file)
             pickle.dump(outside_temp, file)
             pickle.dump(inhouse_temp, file)
+            pickle.dump(eventlog, file)
+            
             if DEBUG : print("données sauvegardées dans le fichier : ", FILENAME )
     except : 
         if DEBUG : print("erreur de sauvegarde des données. Impossible d'écrire sur fichier : ", FILENAME)
-
+    
 def LoadData():
-    global times, chauffage, outside_temp, inhouse_temp
-
+    # Chargement des données enregistrées sur disque
+    global times, chauffage, outside_temp, inhouse_temp, eventlog
     try: # Open NVM file if it exists otherwise use defaults
         with open(FILENAME, 'rb') as file:
             times  = pickle.load(file)
             chauffage  = pickle.load(file)
             outside_temp      = pickle.load(file)
             inhouse_temp = pickle.load(file)
+            eventlog = pickle.load(file)
+            
             if DEBUG : 
                 print("times         : ", times)
-                print("thermostat    : ", chauffage)
+                print("chauffage     : ", chauffage)
                 print("temp. externe : ", outside_temp)
                 print("temp. interne : ", inhouse_temp)
     except:
         if DEBUG : print("erreur dans le chargement des données depuis fichier : ", FILENAME)
+    return
 
-@app.route('/', methods=["GET", "POST"])
-def login():
-    global legend, labels, values, inhouse_temp, outside_temp, times, temp, t, times, Tmin, Tmax, Thermostat, chauffage, pins
-
-    message = "logging"
-    legend = "temp"
-    if request.method == "GET":
-        # Check if user already logged in
-
-        if not session.get("logged_in"):
-            logging.info("login not done, redirect to 'login' page")
-            name = request.form.get("username")
-            pwd = request.form.get("password")
-            logging.info("user: " + str(name) + " password : " + str(pwd) + "try to login")
-            return render_template('login.html', error_message=" welcome ! ")
-        else:
-            logging.info("login already done, redirect to 'main' page")
-            return render_template('main.html')
-
-    if request.method == "POST":
-        # Try to login user
-
-        name = request.form.get("username")
-        pwd = request.form.get("password")
-
-        if pwd == PASSWORD and name == USERNAME:
-                logging.info("user: " + name + " logged in")
-                session['logged_in'] = True
-                # For each pin, read the pin state and store it in the pins dictionary:
-                for pin in pins:
-                    pins[pin]['state'] = GPIO.input(pin)
-                # Put the pin dictionary into the template data dictionary:
-                # Along with the pin dictionary, put the message into the template data dictionary:
-                templateData = LoadTemplateData()
-                # Pass the template data into the template main.html and return it to the user
-                return render_template('main.html', **templateData)
-        else:
-                logging.warning(" !!!!  login with wrong username and password  !!!")
-                logging.info("user: " + str(name) + " with password : " + str(pwd) + " try to login without success")
-                return render_template('login.html', error_message="wrong username and password. Please try again")
-
-@app.route("/logout", methods=["GET",'POST'])
-def logout():
-    session["logged_in"] = False
-    logging.info("user logout")
-    return render_template('login.html')           
-
-@app.route("/table", methods=["GET",'POST'])
-def table():
+@app.route("/camera", methods=["GET","POST"])
+def camera():
+    # activation/arrêt de la caméra
+    global camera, templateData
+    value = request.args.get('value')
+    if value=="true":
+        camera = True
+        LogEvent("Caméra de l'atelier activée (ON)")
+    else:
+        camera = False
+        LogEvent("Caméra de l'atelier désactivée (OFF)")
     templateData = LoadTemplateData()
-    return render_template('table.html',**templateData)    
 
-@app.route("/graph", methods=["GET",'POST'])
-def graph():
-    read_temp()
-    templateData = LoadTemplateData()
-    return render_template('graph.html',**templateData )  
+    return render_template('main.html', **templateData) 
+
+@app.route("/shutdown", methods=['POST','GET'])
+def shutdown():
+    logging.warning("shutdown MyBox")
+    LogEvent("Shutdown...)")
+    SaveData()
+    os.system('sudo halt')
+    return
+   
+@app.route("/reboot", methods=["GET","POST"])
+def reboot():
+    # reboot Raspberry Pi zero
+    logging.warning("reboot MyBox")
+    LogEvent("Reboot...)")
+    SaveData()
+    os.system('sudo reboot')
+    return   
 
 @app.route("/set_thermostat", methods=["GET",'POST'])
 def set_thermostat():
-
+    # Thermostat, valeur max et min et activation/arrêt automatique
     global Tmin, Tmax, Thermostat
    
     Tmin = int(request.form.get("Tmin"))
-    
     Tmax = int(request.form.get("Tmax"))
     checkbox = request.form.get('Thermostat')
-   
+    
     if checkbox :
         Thermostat = True
-        logging.info("Thermostat activé")
+        logging.info("Thermostat activé manuellement")
+        LogEvent("Thermostat activé (ON)")
     else:
         Thermostat = False
         logging.info("Thermostat désactivé")
+        LogEvent("Thermostat désactivé (OFF)")
 
-    text = "Thermostat avec T. min = " + str(Tmin) + " Tmax = " + str(Tmax)
+    text = "Thermostat Temp. min : " + str(Tmin) + " °C ; Temp. max : " + str(Tmax) + " °C "
     logging.info(text)
-    read_temp()
+    LogEvent(text)
+    #read_temp()
     templateData = LoadTemplateData()
 
     return render_template('main.html', **templateData) 
 
 @app.route("/togglerelay", methods=["GET",'POST'])
 def togglerelay():
-    global Thermostat
+    # Changement d'état des relais
+    global Thermostat, pins,chauffage
 
     pin = int(request.args.get('id'))
     checked = request.args.get('checked')
     
+    #si on commande le relai 3 (chauffage, pin22) on contrôle si Thermostat enclenché  
     if pin == 22:
         if not Thermostat:
             if checked=="true":
@@ -232,10 +239,10 @@ def togglerelay():
             
             GPIO.output(pin, not GPIO.input(pin))
             pins[pin]['state'] = GPIO.input(pin)
-            text = "pin #id : " + str(pin) + " change d'état à : " + pins[pin]['status']
-
+            text = pins[pin]['name'] + " : " + pins[pin]['status']
+            LogEvent(text)
         else:
-            text = "Thermostat enclenché. Pas de changement possible"
+            text = "Thermostat enclenché. Pas de changement manuel possible"
     
     else:       
         if pins[pin]['status'] == "ON":
@@ -245,30 +252,27 @@ def togglerelay():
         
         GPIO.output(pin, not GPIO.input(pin))
         pins[pin]['state'] = GPIO.input(pin)
-        text = "pin #id : " + str(pin) + " change d'état à : " + pins[pin]['status']
-
-    read_temp()
+        text = pins[pin]['name'] + " : " + pins[pin]['status']
+        LogEvent(text)
+    
+    #read_temp()
     templateData = LoadTemplateData()
     logging.info(text)
 
     return render_template('main.html', **templateData) 
 
-@app.route("/refresh", methods=["GET",'POST'])
+@app.route("/", methods=["GET",'POST'])
 def dashboard():
     global t
     now = datetime.datetime.now()
     t = now.strftime("%H:%M:%S")
     read_temp()
     templateData = LoadTemplateData()
-    SaveData()
-    LoadData()
     return render_template('main.html', **templateData) 
 
 def read_temp():
-
-    global t, times, Tmin, Tmax, Thermostat, chauffage, Tin, Tout, MAXSIZE
-
     # lecture des senseurs de températures et ajout dans la liste des mesures
+    global t, times, Tmin, Tmax, Thermostat, chauffage, Tin, Tout, MAXSIZE, pins
     for sensor_id in DS18B20.get_available_sensors():
         sensors.append(DS18B20(sensor_id))
     
@@ -280,39 +284,64 @@ def read_temp():
     
     # lecture de l'heure et ajout dans la liste du temps
     now = datetime.datetime.now()
-    t = now.strftime("%-d/%-m %H:%M")  
-    times.append(t)  
-    
+    t0 = now.strftime("%-d/%-m %H:%M")  
+    times.append(t0) 
+     
     # si le dictionnaire contient plus de MAXSIZE valeurs, on supprime la première (plus ancienne) de façon à garder un graphique affichable 
     
     if len(times) > MAXSIZE:
         times.pop(0)
         outside_temp.pop(0)
         inhouse_temp.pop(0)
-        logging.info("Suppression de l'élement le plus ancien de la liste des mesures")   
+        chauffage.pop(0)
 
     if Thermostat: 
         if Tin < Tmin : 
-            logging.info("Température intérieure est plus basse que la valeur thermostat minimale. Chauffage enclenché (relai n°3)")
+            logging.info("Température intérieure est plus basse que la valeur thermostat minimale. Chauffage enclenché")
             GPIO.output(22,0)
+            LogEvent("Température intérieure <= Tmin thermostat, chauffage activé")
             
         if Tin >= Tmax : 
-            logging.info("Température intérieure est plus haute que la valeur thermostat maximale. Chauffage stoppé (relai n°3)")
+            logging.info("Température intérieure est plus haute que la valeur thermostat maximale. Chauffage stoppé")
             GPIO.output(22,1)
-
-        pins[22]['state'] = GPIO.input(22)
+            LogEvent("Température intérieure >= Tmax thermostat, chauffage désactivé")
     
+    pins[22]['state'] = GPIO.input(22)
+    sleep(0.1)
+
+    if DEBUG : 
+            logging.info("pin 22 : " + str(GPIO.input(22)))
+            print("pin 22 : " + str(GPIO.input(22)))
+
     if pins[22]['state']:
         chauffage.append(0)
+        # Chauffage désactivé par thermostat
+        if DEBUG : 
+            logging.info("chauffage déclenché")
+            print("chauffage déclenché")
+            logging.info("chauffage : " + str(chauffage))
+            
     else:
         chauffage.append(10)
-    
+        # Chauffage activé par thermostat
+        if DEBUG : 
+            logging.info("chauffage enclenché")
+            print("chauffage enclenché")
+            logging.info("chauffage : " + str(chauffage))
+    message = "Température intérieure : " + str(Tin) + " °C " 
+    LogEvent(message)
+    message = "Température extérieure : " + str(Tout) + " °C " 
+    LogEvent(message)
+    SaveData()
+
+    return
 
 def loop():
     # Lecture de la température toute les INTERVAL_TIME_MESURE (sec))  
     global  INTERVAL_TIME_MESURE
 
     while True: 
+        LogEvent("Mesure automatique des températures en cours...")
         read_temp()
         sleep(INTERVAL_TIME_MESURE)
 
@@ -321,11 +350,13 @@ def loop():
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
     logging.info("#######        MyBox       #########")
-    logging.info("#######   V3.2 du 13.11.2021  #########")
+    logging.info("####### V4.0 du 8.12.2021  #########")
     logging.info("#######   Patrick Pinard   #########")
-
-    # Demarre le threadpour lecture température
+    LoadData()
+    LogEvent("Démarrage de l'application MyBox V4.0")
+    LogEvent("Fréquence des mesures : " + str(INTERVAL_TIME_MESURE/60) + " mn")
+    # Demarre le thread pour lecture température
+    LogEvent("Démarrage du thread de lecture des mesures")
     t1 = Thread(target=loop)
     t1.start()
-    
-    app.run(host='0.0.0.0', port=80, debug=False)
+    app.run(host='0.0.0.0', port=81, debug=True)
