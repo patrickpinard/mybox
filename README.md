@@ -37,7 +37,10 @@ Le boitier est construit en séparant la partie électrique 240V de la commande 
 
 
 ## Code
-Le code est simple et utilise GPIO, Flask, Bootstrap et Logging.
+Le code comprend une partie "back-end" écrite en python3 avec Flask, Threading, GPIO, pickle et logging.
 
-![](images/relaymodule.jpg)
+Une partie "front-end" est écrite en HTML5, bootstrap, Ajax et Javascript en reprenant des librairies Javascript bien connues comme Chart, dataTables ou bootstrap.
+
+
+
 
