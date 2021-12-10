@@ -22,9 +22,16 @@ Boitier avec 4 prises 240V connectés via GPIO sur Raspberry pi zero.
 Depuis un smartphone :
 
 ![](images/MyBoxV4.0-0.png)
-![](images/MyBoxV4.0-1.png)
+
 ![](images/MyBoxV4.0-2.png)
+
 ![](images/MyBoxV4.0-3.png)
+
+Depuis un iPAD :
+
+![](images/MyBoxV4.1-iPAD-1.png)
+
+![](images/MyBoxV4.1-iPAD-2.png)
 
 Depuis un PC :
 
