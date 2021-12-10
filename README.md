@@ -1,6 +1,7 @@
 # MyBox
 
-Ce projet consiste à regrouper différentes technologies pour piloter un boitier comprenant 4 relais 240V, 2 sondes de températures DS18B20 grâce à une application web simple en utilisant Flask, Bootstrap et un peu d'Ajax et Javascript sur un Raspberry Pi zero.
+Ce projet consiste à regrouper différentes technologies pour piloter un boitier comprenant 4 relais 240V, 2 sondes de températures DS18B20 grâce à une application web en utilisant Flask, Bootstrap et un peu d'Ajax et Javascript sur un Raspberry Pi zero.
+Evolution du projet relaybox précédent en ajoutant deux sondes températures et une interface plus "sexy"
 
 
 ## Module 4x relais 240V
