@@ -1,33 +1,38 @@
-
 #!/usr/bin/env python
 # coding: utf-8
-# Auteur    : Patrick Pinard
-# Date      : 09.12.2021
-# Objet     : Pilotage modules 4 relais et 2 sondes températures (intérieure et extérieure) avec interface web basée sur Flask et bootstrap sur PI zero 
+"""
+Auteur    : Patrick Pinard
+Date      : 08.12.2021
+Objet     : Pilotage modules 4 relais et 2 sondes températures (intérieure
+            et extérieure) avec interface web basée sur Flask et
+            bootstrap sur PI zero
 
-# Version   :   4.1 - changement largeur (6) pour compatibilité avec iphone/iPAD
-#               4.0 - finalisation avec eventlog et ID pour classer les log dans l'ordre
-#               3.5 - ajout de l'eventlog 
-#               3.4 - correctif affichage graph avec chauffage
-#               3.3 - simplification du template html pour être plus compatible avec IOS
-#               3.2 - optimisation code et requete http/get lors changement d'état d'un des switches checkbox toggle
-#               3.1 - ajout du checkbox toggle sur relais pour faire plus fun
-#               3.0 - réorganisation des données dans des dictionnaires  (pas encore JSON, mais peut être plus tard)
-#               2.0 - ajout d'un Framework Bootstrap pour un affichage plus pro
-#               1.3 - ajout de la lecture de température via un thread
-#               1.2 - modification du log file
-#               1.1 - ajout du bouton shutdown externe
-#               1.0 - version initiale fonctionelle
+Version   :   3.5 - ajout de l'eventlog
+              3.4 - correctif affichage graph avec chauffage
+              3.3 - simplification du template html pour être plus compatible
+                    avec IOS
+              3.2 - optimisation code et requete http/get lors changement
+                    d'état d'un des switches checkbox toggle
+              3.1 - ajout du checkbox toggle sur relais pour faire plus fun
+              3.0 - réorganisation des données dans des dictionnaires
+                    (pas encore JSON, mais peut être plus tard)
+              2.0 - ajout d'un Framework Bootstrap pour un affichage plus pro
+              1.3 - ajout de la lecture de température via un thread
+              1.2 - modification du log file
+              1.1 - ajout du bouton shutdown externe
+              1.0 - version initiale fonctionelle
 
-#   Clavier MAC :      
-#  {} = "alt/option" + "(" ou ")"
-#  [] = "alt/option" + "5" ou "6"
-#   ~  = "alt/option" + n    
-#   \  = Alt + Maj + / 
+   Clavier MAC :
+  {} = "alt/option" + "(" ou ")"
+  [] = "alt/option" + "5" ou "6"
+   ~  = "alt/option" + n
+   \  = Alt + Maj + /
 
+ """
 
 import RPi.GPIO as GPIO
-from flask import Flask, Markup, render_template, request, redirect, jsonify, url_for, session, abort
+from flask import Flask, Markup, render_template, request
+from flask import redirect, jsonify, url_for, session, abort
 from flask_restful import Resource, Api, reqparse
 import logging
 import datetime
@@ -73,8 +78,11 @@ pins = {
         23: {'name': 'Relai 4', 'state': GPIO.HIGH, 'status': "OFF"}
     }
 
-# Création du FICHIER LOG: 
-logging.basicConfig(filename= LOGFILE, filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Création du FICHIER LOG:
+logging.basicConfig(filename=LOGFILE,
+                    filemode='w',
+                    level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Définition des pins GPIO sur Raspberry pi zero:
 GPIO.setmode(GPIO.BCM)
@@ -83,7 +91,8 @@ GPIO.setwarnings(False)
 # Création de l'APPLICATION FLASK:
 app = Flask(__name__)
 
-# Définition des pins en output et mise à zero (circuit ouvert = gpio.high; circuit fermé = gpio.low):
+# Définition des pins en output et mise à zero
+# (circuit ouvert = gpio.high; circuit fermé = gpio.low):
 for pin in pins:
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
@@ -109,8 +118,8 @@ def LogEvent(message):
     return
 
 def LoadTemplateData():
-
-    # chargement de l'ensemble des données dans un template transmis au front-end bootstrap 
+    # chargement de l'ensemble des données dans
+    # un template transmis au front-end bootstrap
 
     global inhouse_temp, outside_temp, times, Tmin, Tmax, Thermostat, chauffage, Tin, Tout, pins, camera, eventlog
     return      {   
@@ -163,8 +172,8 @@ def LoadData():
 
 @app.route("/camera", methods=["GET","POST"])
 def camera():
-
-    # activation/arrêt de la caméra sur l'interface web. la caméra est sur un autre raspberry pi zero
+    # activation/arrêt de la caméra sur l'interface web.
+    # La caméra est sur un autre raspberry pi zero
 
     global camera, templateData
 
@@ -209,9 +218,11 @@ def set_thermostat():
    
     Tmin = int(request.form.get("Tmin"))
     Tmax = int(request.form.get("Tmax"))
-    checkbox = request.form.get('Thermostat')   # pour savoir si thermostat est activé ou non
-    
-    if checkbox :
+
+    checkbox = request.form.get('Thermostat')  # pour savoir si thermostat est activé ou non
+
+    if checkbox:
+
         Thermostat = True
         LogEvent("Thermostat activé (ON)")
     else:
@@ -281,44 +292,47 @@ def read_temp():
 
     for sensor_id in DS18B20.get_available_sensors():
         sensors.append(DS18B20(sensor_id))
-    
-    Tout =round(sensors[0].get_temperature(DS18B20.DEGREES_C),2)
-    Tin= round(sensors[1].get_temperature(DS18B20.DEGREES_C),2)
-    
-    outside_temp.append(round(sensors[0].get_temperature(DS18B20.DEGREES_C),2))
-    inhouse_temp.append(round(sensors[1].get_temperature(DS18B20.DEGREES_C),2))
-    
+
+    Tout = round(sensors[0].get_temperature(DS18B20.DEGREES_C), 2)
+    Tin = round(sensors[1].get_temperature(DS18B20.DEGREES_C), 2)
+
+    outside_temp.append(round(sensors[0].get_temperature(DS18B20.DEGREES_C), 2))
+    inhouse_temp.append(round(sensors[1].get_temperature(DS18B20.DEGREES_C), 2))
+
     # lecture de l'heure et ajout dans la liste du temps
     now = datetime.datetime.now()
-    t0 = now.strftime("%-d/%-m %H:%M")  
-    times.append(t0) 
-     
-    # si le dictionnaire contient plus de MAXSIZE valeurs, on supprime la plus ancienne de façon à garder un graphique affichable 
-    
+    t0 = now.strftime("%-d/%-m %H:%M")
+    times.append(t0)
+
+    # si le dictionnaire contient plus de MAXSIZE valeurs,
+    # on supprime la plus ancienne de façon à garder un graphique affichable
+
     if len(times) > MAXSIZE:
         times.pop(0)
         outside_temp.pop(0)
         inhouse_temp.pop(0)
         chauffage.pop(0)
 
-    if Thermostat: 
-        if Tin < Tmin : 
-            GPIO.output(22,0)
+    if Thermostat:
+        if Tin < Tmin:
+            GPIO.output(22, 0)
             LogEvent("Température intérieure <= Tmin thermostat, chauffage activé (ON)")
-            
-        if Tin >= Tmax : 
-            GPIO.output(22,1)
+
+        if Tin >= Tmax:
+            GPIO.output(22, 1)
             LogEvent("Température intérieure >= Tmax thermostat, chauffage désactivé (OFF)")
-    
+
     pins[22]['state'] = GPIO.input(22)
 
     if pins[22]['state']:
         chauffage.append(0)
         # Chauffage désactivé par thermostat
-            
+
     else:
         chauffage.append(10)
-        # Chauffage activé par thermostat (10 est une valeur arbitraire pour un affichage sur graph en adéquation avec les températures)
+        # Chauffage activé par thermostat (10 est une valeur
+        # arbitraire pour un affichage sur graph en adéquation
+        # avec les températures)
 
     message = "Température intérieure : " + str(Tin) + " °C, extérieure : " + str(Tout) + " °C "
     LogEvent(message)
@@ -326,20 +340,17 @@ def read_temp():
 
     return
 
+
 def loop():
+    # Lecture de la température toute les INTERVAL_TIME_MESURE (sec))
+    global INTERVAL_TIME_MESURE
 
-    # Lecture de la température toute les INTERVAL_TIME_MESURE (sec))  
-
-    global  INTERVAL_TIME_MESURE
-
-    while True: 
+    while True:
         read_temp()
         sleep(INTERVAL_TIME_MESURE)
 
 
-
 if __name__ == "__main__":
-    
     app.secret_key = os.urandom(12)
 
     LogEvent("Lancement de MyBox V4.1 (9/12/2021)")
